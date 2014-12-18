@@ -14,6 +14,7 @@
 		970664691A3FE1C300FEEBF8 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 970664671A3FE1C300FEEBF8 /* LaunchScreen.xib */; };
 		970664751A3FE1C300FEEBF8 /* FetchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970664741A3FE1C300FEEBF8 /* FetchTests.swift */; };
 		9706647F1A3FF10900FEEBF8 /* Interstellar.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 9706647E1A3FF10900FEEBF8 /* Interstellar.jpg */; };
+		970664811A42802400FEEBF8 /* IMDbAPIController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970664801A42802400FEEBF8 /* IMDbAPIController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,6 +39,7 @@
 		970664731A3FE1C300FEEBF8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		970664741A3FE1C300FEEBF8 /* FetchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchTests.swift; sourceTree = "<group>"; };
 		9706647E1A3FF10900FEEBF8 /* Interstellar.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Interstellar.jpg; sourceTree = "<group>"; };
+		970664801A42802400FEEBF8 /* IMDbAPIController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IMDbAPIController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,6 +83,7 @@
 			children = (
 				9706645E1A3FE1C300FEEBF8 /* AppDelegate.swift */,
 				970664601A3FE1C300FEEBF8 /* ViewController.swift */,
+				970664801A42802400FEEBF8 /* IMDbAPIController.swift */,
 				970664621A3FE1C300FEEBF8 /* Main.storyboard */,
 				970664651A3FE1C300FEEBF8 /* Images.xcassets */,
 				970664671A3FE1C300FEEBF8 /* LaunchScreen.xib */,
@@ -216,6 +219,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				970664811A42802400FEEBF8 /* IMDbAPIController.swift in Sources */,
 				970664611A3FE1C300FEEBF8 /* ViewController.swift in Sources */,
 				9706645F1A3FE1C300FEEBF8 /* AppDelegate.swift in Sources */,
 			);

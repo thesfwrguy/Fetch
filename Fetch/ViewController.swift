@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, IMDbAPIControllerDelegate{
 
     @IBOutlet var titleLabel        : UILabel?      //movie title
     @IBOutlet var releasedLabel     : UILabel?      //movie release date
@@ -16,75 +16,53 @@ class ViewController: UIViewController {
     @IBOutlet var plotLabel         : UILabel?      //movie plot
     @IBOutlet var posterImageView   : UIImageView?  //movie poster
     
+    lazy var apiController: IMDbAPIController = IMDbAPIController(delegate: self)
+    
     override func viewDidLoad() {
+        
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        
+        self.apiController.delegate = self
+        
     }
 
     override func didReceiveMemoryWarning() {
+        
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+        
     }
     
     @IBAction func buttonPressed(sender: AnyObject) {
-        self.searchIMDb("King of Kong")
+        
+        self.apiController.searchIMDb("Interstellar")
         
     }
     
-    func searchIMDb(forContent : String) {
+    func didFinishIMDbSearch(result: Dictionary<String, String>) {
         
-        //clean the string of spaces and get it ready to pass onto the API
-        //will replace spaces in the string with %20 which is the ascii encoded value of a space in a URL string
+        self.titleLabel?.text       = result["Title"]
+        self.releasedLabel?.text    = result["Released"]
+        self.ratingLabel?.text      = result["Rated"]
+        self.plotLabel?.text        = result["Plot"]
         
-        var spacelessString = forContent.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)
-        
-        if let foundString = spacelessString? {
+        if let foundPosterURL = result["Poster"]?{
             
-            //create NSURL object - to pass onto
-            var urlPath = NSURL(string: "http://www.omdbapi.com/?t=\(foundString)")
-    
-            //to reach out to the internet, we need sharedsession - a singleton object that can be returned from the NSURLSession (provides an API for downloading content via HTTP
-            var session = NSURLSession.sharedSession()
-        
-            //making our API request by calling data task by passing URL on that session
-            var task = session.dataTaskWithURL(urlPath!) {
+            self.formatImageFromPath(foundPosterURL)
             
-                data, response, error -> Void in
-            
-                //print the error if any exist
-                if (error != nil) {
-                    println(error.localizedDescription)
-                }
-                
-                //create an NSError optional object to pass in as parameter
-                var jsonError : NSError?
-                
-                //take the 'data' that was passed in from the dataTaskWithURL request and put it in to a variable
-                var jsonResult = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers, error: &jsonError) as Dictionary<String,String>
-                
-                if(jsonError != nil) {
-                    println(jsonError!.localizedDescription)
-                }
-                
-                
-                
-               // if let apiDelegate = self.delegate? {
-                    dispatch_async(dispatch_get_main_queue()) {
-                        
-                        self.titleLabel?.text       = jsonResult["Title"]
-                        self.releasedLabel?.text    = jsonResult["Released"]
-                        self.ratingLabel?.text      = jsonResult["Rated"]
-                        self.plotLabel?.text        = jsonResult["Plot"]
-                        //apiDelegate.didFinishIMDbSearch(jsonResult)
-                    }
-                //}
-            
-            }
-            task.resume()
         }
         
     }
     
+    func formatImageFromPath(path: String) {
+        
+        var posterURL                       = NSURL(string: path)
+        var posterImageData                 = NSData(contentsOfURL: posterURL!)
+        self.posterImageView?.clipsToBounds = true
+        self.posterImageView?.image         = UIImage(data: posterImageData!)
+        
+    }
 
 }
 
