@@ -8,13 +8,15 @@
 
 import UIKit
 
-class ViewController: UIViewController, IMDbAPIControllerDelegate{
+class ViewController: UIViewController, IMDbAPIControllerDelegate, UISearchBarDelegate {
 
     @IBOutlet var titleLabel        : UILabel?      //movie title
     @IBOutlet var releasedLabel     : UILabel?      //movie release date
     @IBOutlet var ratingLabel       : UILabel?      //movie rating
     @IBOutlet var plotLabel         : UILabel?      //movie plot
     @IBOutlet var posterImageView   : UIImageView?  //movie poster
+    @IBOutlet var imdbSearchBar     : UISearchBar?
+    @IBOutlet var metascoreLabel    : UILabel?      //movie metascore
     
     lazy var apiController: IMDbAPIController = IMDbAPIController(delegate: self)
     
@@ -25,6 +27,9 @@ class ViewController: UIViewController, IMDbAPIControllerDelegate{
         
         self.apiController.delegate = self
         
+        let tapGesture = UITapGestureRecognizer(target: self, action: "userTappedInView:")
+        self.view.addGestureRecognizer(tapGesture)
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -34,18 +39,13 @@ class ViewController: UIViewController, IMDbAPIControllerDelegate{
         
     }
     
-    @IBAction func buttonPressed(sender: AnyObject) {
-        
-        self.apiController.searchIMDb("Interstellar")
-        
-    }
-    
     func didFinishIMDbSearch(result: Dictionary<String, String>) {
         
         self.titleLabel?.text       = result["Title"]
-        self.releasedLabel?.text    = result["Released"]
-        self.ratingLabel?.text      = result["Rated"]
+        self.releasedLabel?.text    = "Release Date: " + result["Released"]!
+        self.ratingLabel?.text      = "IMDb Rating: " + result["imdbRating"]! + " with " + result["imdbVotes"]!
         self.plotLabel?.text        = result["Plot"]
+        self.metascoreLabel?.text   = "Metascore: " + result["Metascore"]!
         
         if let foundPosterURL = result["Poster"]?{
             
@@ -62,6 +62,17 @@ class ViewController: UIViewController, IMDbAPIControllerDelegate{
         self.posterImageView?.clipsToBounds = true
         self.posterImageView?.image         = UIImage(data: posterImageData!)
         
+    }
+    
+    func searchBarSearchButtonClicked(searchBar: UISearchBar) {
+        
+        self.apiController.searchIMDb(searchBar.text)
+        searchBar.resignFirstResponder()
+        searchBar.text = ""
+    }
+    
+    func userTappedInView(recognizer: UITapGestureRecognizer) {
+        self.imdbSearchBar?.resignFirstResponder()
     }
 
 }
