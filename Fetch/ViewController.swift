@@ -18,6 +18,7 @@ class ViewController: UIViewController, IMDbAPIControllerDelegate, UISearchBarDe
     @IBOutlet var posterImageView   : UIImageView!  //movie poster
     @IBOutlet var imdbSearchBar     : UISearchBar!
     @IBOutlet var metascoreLabel    : UILabel!      //movie metascore
+    @IBOutlet var tomatoLabel       : UILabel!      //rotten tomatoes rating
     
     lazy var apiController: IMDbAPIController = IMDbAPIController(delegate: self)
     
@@ -47,14 +48,21 @@ class ViewController: UIViewController, IMDbAPIControllerDelegate, UISearchBarDe
         self.formatLabels(false)
         
         if let foundTitle = result["Title"] {
+            
             parseTitleFromSubtitle(foundTitle)
+        
+        }
+        
+        if let foundTomato = result["tomatoMeter"] {
+            
+            self.tomatoLabel.text = "TomatoMeter: " + foundTomato + "%"
+            
         }
         
         self.releasedLabel?.text    = "Release Date: " + result["Released"]!
         self.ratingLabel?.text      = "IMDb Rating: " + result["imdbRating"]! + " with " + result["imdbVotes"]! + " votes"
         self.plotLabel?.text        = result["Plot"]
         self.metascoreLabel?.text   = "Metascore: " + result["Metascore"]!
-        
         
         if let foundPosterURL = result["Poster"]?{
             
@@ -66,7 +74,7 @@ class ViewController: UIViewController, IMDbAPIControllerDelegate, UISearchBarDe
     
     func formatLabels(firstLaunch: Bool) {
         
-        var labelsArray = [self.titleLabel, self.subtitleLabel, self.releasedLabel, self.ratingLabel, self.plotLabel, self.metascoreLabel]
+        var labelsArray = [self.titleLabel, self.subtitleLabel, self.releasedLabel, self.ratingLabel, self.plotLabel, self.metascoreLabel, self.tomatoLabel]
         
         if (firstLaunch) {
             
@@ -92,11 +100,14 @@ class ViewController: UIViewController, IMDbAPIControllerDelegate, UISearchBarDe
             case self.subtitleLabel!:
                 label.font = UIFont(name: "Avenir Next", size: 14)
                 
-            case self.releasedLabel!, self.ratingLabel!:
+            case self.releasedLabel!:
                 label.font = UIFont(name: "Avenir Next", size: 12)
                 
             case self.plotLabel!:
                 label.font = UIFont(name: "Avenir Next", size: 18)
+                
+            case self.ratingLabel!, self.tomatoLabel, self.metascoreLabel:
+                label.font = UIFont(name: "AvenirNext-UltraLight", size: 18)
                 
             default:
                 label.font = UIFont(name: "Avenir Next", size: 14)

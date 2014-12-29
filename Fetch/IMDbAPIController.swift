@@ -32,7 +32,7 @@ class IMDbAPIController {
         if let foundString = spacelessString? {
             
             //create NSURL object - to pass onto
-            var urlPath = NSURL(string: "http://www.omdbapi.com/?t=\(foundString)")
+            var urlPath = NSURL(string: "http://www.omdbapi.com/?t=\(foundString)&tomatoes=true")
             
             //to reach out to the internet, we need sharedsession - a singleton object that can be returned from the NSURLSession (provides an API for downloading content via HTTP
             var session = NSURLSession.sharedSession()
