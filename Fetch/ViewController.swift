@@ -10,14 +10,14 @@ import UIKit
 
 class ViewController: UIViewController, IMDbAPIControllerDelegate, UISearchBarDelegate {
 
-    @IBOutlet var titleLabel        : UILabel?      //movie title
-    @IBOutlet var subtitleLabel     : UILabel?      
-    @IBOutlet var releasedLabel     : UILabel?      //movie release date
-    @IBOutlet var ratingLabel       : UILabel?      //movie rating
-    @IBOutlet var plotLabel         : UILabel?      //movie plot
-    @IBOutlet var posterImageView   : UIImageView?  //movie poster
-    @IBOutlet var imdbSearchBar     : UISearchBar?
-    @IBOutlet var metascoreLabel    : UILabel?      //movie metascore
+    @IBOutlet var titleLabel        : UILabel!      //movie title
+    @IBOutlet var subtitleLabel     : UILabel!
+    @IBOutlet var releasedLabel     : UILabel!      //movie release date
+    @IBOutlet var ratingLabel       : UILabel!      //movie rating
+    @IBOutlet var plotLabel         : UILabel!      //movie plot
+    @IBOutlet var posterImageView   : UIImageView!  //movie poster
+    @IBOutlet var imdbSearchBar     : UISearchBar!
+    @IBOutlet var metascoreLabel    : UILabel!      //movie metascore
     
     lazy var apiController: IMDbAPIController = IMDbAPIController(delegate: self)
     
@@ -31,6 +31,8 @@ class ViewController: UIViewController, IMDbAPIControllerDelegate, UISearchBarDe
         let tapGesture = UITapGestureRecognizer(target: self, action: "userTappedInView:")
         self.view.addGestureRecognizer(tapGesture)
         
+        self.formatLabels(true)
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -42,12 +44,14 @@ class ViewController: UIViewController, IMDbAPIControllerDelegate, UISearchBarDe
     
     func didFinishIMDbSearch(result: Dictionary<String, String>) {
         
+        self.formatLabels(false)
+        
         if let foundTitle = result["Title"] {
             parseTitleFromSubtitle(foundTitle)
         }
         
         self.releasedLabel?.text    = "Release Date: " + result["Released"]!
-        self.ratingLabel?.text      = "IMDb Rating: " + result["imdbRating"]! + " with " + result["imdbVotes"]!
+        self.ratingLabel?.text      = "IMDb Rating: " + result["imdbRating"]! + " with " + result["imdbVotes"]! + " votes"
         self.plotLabel?.text        = result["Plot"]
         self.metascoreLabel?.text   = "Metascore: " + result["Metascore"]!
         
@@ -55,6 +59,49 @@ class ViewController: UIViewController, IMDbAPIControllerDelegate, UISearchBarDe
         if let foundPosterURL = result["Poster"]?{
             
             self.formatImageFromPath(foundPosterURL)
+            
+        }
+        
+    }
+    
+    func formatLabels(firstLaunch: Bool) {
+        
+        var labelsArray = [self.titleLabel, self.subtitleLabel, self.releasedLabel, self.ratingLabel, self.plotLabel, self.metascoreLabel]
+        
+        if (firstLaunch) {
+            
+            //set labels to empty strings upon first launch of the app
+            for label in labelsArray {
+                
+                label?.text = ""
+                
+            }
+            
+        }
+        
+        for label in labelsArray {
+            
+            //align text
+            label?.textAlignment = NSTextAlignment.Center
+            
+            switch label {
+                
+            case self.titleLabel:
+                label?.font = UIFont(name: "Avenir Next", size: 24)
+                
+            case self.subtitleLabel!:
+                label.font = UIFont(name: "Avenir Next", size: 14)
+                
+            case self.releasedLabel!, self.ratingLabel!:
+                label.font = UIFont(name: "Avenir Next", size: 12)
+                
+            case self.plotLabel!:
+                label.font = UIFont(name: "Avenir Next", size: 18)
+                
+            default:
+                label.font = UIFont(name: "Avenir Next", size: 14)
+                
+            }
             
         }
         
