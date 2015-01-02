@@ -19,6 +19,7 @@ class ViewController: UIViewController, IMDbAPIControllerDelegate, UISearchBarDe
     @IBOutlet var imdbSearchBar     : UISearchBar!
     @IBOutlet var metascoreLabel    : UILabel!      //movie metascore
     @IBOutlet var tomatoLabel       : UILabel!      //rotten tomatoes rating
+    @IBOutlet var headerView        : UIView!       //background yellow view for the search bar
     
     lazy var apiController: IMDbAPIController = IMDbAPIController(delegate: self)
     
@@ -33,6 +34,8 @@ class ViewController: UIViewController, IMDbAPIControllerDelegate, UISearchBarDe
         self.view.addGestureRecognizer(tapGesture)
         
         self.formatLabels(true)
+        
+        self.headerView.backgroundColor = UIColor(red: 0.988, green: 0.725, blue: 0.200, alpha: 1)
         
     }
 
@@ -55,16 +58,35 @@ class ViewController: UIViewController, IMDbAPIControllerDelegate, UISearchBarDe
         
         if let foundTomato = result["tomatoMeter"] {
             
-            self.tomatoLabel.text = "TomatoMeter: " + foundTomato + "%"
+            self.tomatoLabel.text       = "TomatoMeter: " + foundTomato + "%"
             
         }
         
-        self.releasedLabel?.text    = "Release Date: " + result["Released"]!
-        self.ratingLabel?.text      = "IMDb Rating: " + result["imdbRating"]! + " with " + result["imdbVotes"]! + " votes"
-        self.plotLabel?.text        = result["Plot"]
-        self.metascoreLabel?.text   = "Metascore: " + result["Metascore"]!
+        if let foundReleased = result["Released"] {
+            
+            self.releasedLabel?.text    = "Release Date: " + result["Released"]!
+            
+        }
         
-        if let foundPosterURL = result["Poster"]?{
+        if let foundRating = result["imdbRating"] {
+            
+            self.ratingLabel?.text      = "IMDb Rating: " + result["imdbRating"]! + " with " + result["imdbVotes"]! + " votes"
+            
+        }
+        
+        if let foundPlot = result["Plot"] {
+            
+            self.plotLabel?.text        = result["Plot"]
+            
+        }
+        
+        if let foundMetascore = result[""] {
+            
+            self.metascoreLabel?.text   = "Metascore: " + result["Metascore"]!
+            
+        }
+        
+        if let foundPosterURL = result["Poster"] {
             
             self.formatImageFromPath(foundPosterURL)
             
@@ -104,10 +126,10 @@ class ViewController: UIViewController, IMDbAPIControllerDelegate, UISearchBarDe
                 label.font = UIFont(name: "Avenir Next", size: 12)
                 
             case self.plotLabel!:
-                label.font = UIFont(name: "Avenir Next", size: 18)
+                label.font = UIFont(name: "Avenir Next", size: 14)
                 
             case self.ratingLabel!, self.tomatoLabel, self.metascoreLabel:
-                label.font = UIFont(name: "AvenirNext-UltraLight", size: 18)
+                label.font = UIFont(name: "Avenir Next", size: 18)
                 
             default:
                 label.font = UIFont(name: "Avenir Next", size: 14)
@@ -140,10 +162,11 @@ class ViewController: UIViewController, IMDbAPIControllerDelegate, UISearchBarDe
     
     func formatImageFromPath(path: String) {
         
-        var posterURL                       = NSURL(string: path)
-        var posterImageData                 = NSData(contentsOfURL: posterURL!)
-        self.posterImageView?.clipsToBounds = true
-        self.posterImageView?.image         = UIImage(data: posterImageData!)
+        var posterURL                               = NSURL(string: path)
+        var posterImageData                         = NSData(contentsOfURL: posterURL!)
+        //self.posterImageView.layer.cornerRadius     = 20.0
+        self.posterImageView?.clipsToBounds         = true
+        self.posterImageView?.image                 = UIImage(data: posterImageData!)
         
         if let imageToBlur = self.posterImageView?.image {
             
