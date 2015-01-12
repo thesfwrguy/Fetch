@@ -80,7 +80,7 @@ class ViewController: UIViewController, IMDbAPIControllerDelegate, UISearchBarDe
             
         }
         
-        if let foundMetascore = result[""] {
+        if let foundMetascore = result["Metascore"] {
             
             self.metascoreLabel?.text   = "Metascore: " + result["Metascore"]!
             
@@ -166,7 +166,10 @@ class ViewController: UIViewController, IMDbAPIControllerDelegate, UISearchBarDe
         var posterImageData                         = NSData(contentsOfURL: posterURL!)
         //self.posterImageView.layer.cornerRadius     = 20.0
         self.posterImageView?.clipsToBounds         = true
-        self.posterImageView?.image                 = UIImage(data: posterImageData!)
+        if let imageData = posterImageData? {
+            self.posterImageView?.image             = UIImage(data: imageData)
+        }
+        
         
         if let imageToBlur = self.posterImageView?.image {
             

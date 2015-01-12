@@ -32,6 +32,65 @@ class IMDbAPIController {
         if let foundString = spacelessString? {
             
             //create NSURL object - to pass onto
+            //returns a JSON of all titles matching the name
+            var totalResultsPath = NSURL(string: "http://www.omdbapi.com/?s=\(foundString)&tomatoes=true")
+            
+            var session2 = NSURLSession.sharedSession()
+            
+            var task2 = session2.dataTaskWithURL(totalResultsPath!) {
+                
+                data2, response2, error2 -> Void in
+                
+                //print the error if any exist
+                if (error2 != nil) {
+                    println(error2.localizedDescription)
+                }
+                
+                //create an NSError optional object to pass in as parameter
+                var jsonError : NSError?
+                
+                //take the 'data' that was passed in from the dataTaskWithURL request and put it in to a variable
+                var jsonResult : AnyObject? = NSJSONSerialization.JSONObjectWithData(data2, options: NSJSONReadingOptions.MutableContainers, error: &jsonError)
+                //println("Just here: \(jsonResult)")
+                
+                if let dict = jsonResult as? [String: AnyObject] {
+                    println("************")
+                    println(dict)
+                    if let movieDictionary = dict["Search"]! as? [AnyObject] {
+                        println("************")
+                        println("************")
+                        println("\nMovie dictionary:\n\n\(movieDictionary)")
+                        if let movieString = movieDictionary[0]["Title"]! as? String {
+                            self.searchIMDb2(movieString)
+                            println("***********")
+                            println("***********")
+                            println("***********")
+                            for i in movieDictionary {
+                                var j = i["Title"] as? String
+                                var k = i["Year"] as? String
+                                println("Here goes: \(j!) - \(k!)")
+                            }
+                        }
+                    }
+                }
+                
+            }
+            task2.resume()
+        }
+        
+    }
+    
+    func searchIMDb2(forContent : String) {
+        
+        //clean the string of spaces and get it ready to pass onto the API
+        //will replace spaces in the string with %20 which is the ascii encoded value of a space in a URL string
+        
+        var spacelessString = forContent.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)
+        
+        if let foundString = spacelessString? {
+            
+            //create NSURL object - to pass onto
+            //returns a JSON of the only title matching the name
             var urlPath = NSURL(string: "http://www.omdbapi.com/?t=\(foundString)&tomatoes=true")
             
             //to reach out to the internet, we need sharedsession - a singleton object that can be returned from the NSURLSession (provides an API for downloading content via HTTP
@@ -67,9 +126,11 @@ class IMDbAPIController {
                 
             }
             task.resume()
+            
         }
         
     }
+
 
     
 }
