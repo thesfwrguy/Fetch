@@ -6,6 +6,11 @@
 //  Copyright (c) 2014 Kanishka Goel. All rights reserved.
 //
 
+var movieNameArray: [String] = []
+var movieReleaseArray: [String] = []
+var movieTypeArray: [String] = []
+var movieIDArray: [String] = []
+
 import UIKit
 
 protocol IMDbAPIControllerDelegate {
@@ -54,22 +59,32 @@ class IMDbAPIController {
                 //println("Just here: \(jsonResult)")
                 
                 if let dict = jsonResult as? [String: AnyObject] {
-                    println("************")
-                    println(dict)
-                    if let movieDictionary = dict["Search"]! as? [AnyObject] {
+                    //println("************")
+                    //println(dict)
+                    if let movieDictionary = dict["Search"] as? [AnyObject] {
                         println("************")
                         println("************")
                         println("\nMovie dictionary:\n\n\(movieDictionary)")
                         if let movieString = movieDictionary[0]["Title"]! as? String {
                             self.searchIMDb2(movieString)
-                            println("***********")
-                            println("***********")
-                            println("***********")
+                            //println("***********")
+                            //println("***********")
+                            //println("***********")
+                            movieNameArray.removeAll(keepCapacity: true)
+                            movieReleaseArray.removeAll(keepCapacity: true)
+                            movieTypeArray.removeAll(keepCapacity: true)
+                            movieIDArray.removeAll(keepCapacity: true)
                             for i in movieDictionary {
                                 var j = i["Title"] as? String
                                 var k = i["Year"] as? String
-                                println("Here goes: \(j!) - \(k!)")
+                                var l = i["Type"] as? String
+                                var m = i["imdbID"] as? String
+                                movieNameArray.append(j!)
+                                movieReleaseArray.append(k!)
+                                movieTypeArray.append(l!)
+                                movieIDArray.append(m!)
                             }
+                            //println("Here goes: \(movieArray)")
                         }
                     }
                 }

@@ -16,6 +16,7 @@
 		9706647F1A3FF10900FEEBF8 /* Interstellar.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 9706647E1A3FF10900FEEBF8 /* Interstellar.jpg */; };
 		970664811A42802400FEEBF8 /* IMDbAPIController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970664801A42802400FEEBF8 /* IMDbAPIController.swift */; };
 		970664991A46173700FEEBF8 /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970664981A46173700FEEBF8 /* StringExtension.swift */; };
+		97FA3B511A65032600E0C056 /* SearchResultsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97FA3B501A65032600E0C056 /* SearchResultsController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -42,6 +43,7 @@
 		9706647E1A3FF10900FEEBF8 /* Interstellar.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Interstellar.jpg; sourceTree = "<group>"; };
 		970664801A42802400FEEBF8 /* IMDbAPIController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IMDbAPIController.swift; sourceTree = "<group>"; };
 		970664981A46173700FEEBF8 /* StringExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
+		97FA3B501A65032600E0C056 /* SearchResultsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchResultsController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -88,6 +90,7 @@
 				970664801A42802400FEEBF8 /* IMDbAPIController.swift */,
 				970664621A3FE1C300FEEBF8 /* Main.storyboard */,
 				970664981A46173700FEEBF8 /* StringExtension.swift */,
+				97FA3B501A65032600E0C056 /* SearchResultsController.swift */,
 				970664651A3FE1C300FEEBF8 /* Images.xcassets */,
 				970664671A3FE1C300FEEBF8 /* LaunchScreen.xib */,
 				9706645C1A3FE1C300FEEBF8 /* Supporting Files */,
@@ -225,6 +228,7 @@
 				970664811A42802400FEEBF8 /* IMDbAPIController.swift in Sources */,
 				970664991A46173700FEEBF8 /* StringExtension.swift in Sources */,
 				970664611A3FE1C300FEEBF8 /* ViewController.swift in Sources */,
+				97FA3B511A65032600E0C056 /* SearchResultsController.swift in Sources */,
 				9706645F1A3FE1C300FEEBF8 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -417,6 +421,7 @@
 				9706647A1A3FE1C300FEEBF8 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		9706647B1A3FE1C300FEEBF8 /* Build configuration list for PBXNativeTarget "FetchTests" */ = {
 			isa = XCConfigurationList;
@@ -425,6 +430,7 @@
 				9706647D1A3FE1C300FEEBF8 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

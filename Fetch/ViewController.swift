@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController, IMDbAPIControllerDelegate, UISearchBarDelegate {
+class ViewController: UIViewController, IMDbAPIControllerDelegate, UISearchBarDelegate, UISearchControllerDelegate {
 
     @IBOutlet var titleLabel        : UILabel!      //movie title
     @IBOutlet var subtitleLabel     : UILabel!
@@ -19,8 +19,10 @@ class ViewController: UIViewController, IMDbAPIControllerDelegate, UISearchBarDe
     @IBOutlet var imdbSearchBar     : UISearchBar!
     @IBOutlet var metascoreLabel    : UILabel!      //movie metascore
     @IBOutlet var tomatoLabel       : UILabel!      //rotten tomatoes rating
-    @IBOutlet var headerView        : UIView!       //background yellow view for the search bar
+    //@IBOutlet var headerView        : UIView!       //background yellow view for the search bar
     
+    @IBOutlet weak var tableHeader: UITableView!
+    var searchController: UISearchController!
     lazy var apiController: IMDbAPIController = IMDbAPIController(delegate: self)
     
     override func viewDidLoad() {
@@ -35,7 +37,17 @@ class ViewController: UIViewController, IMDbAPIControllerDelegate, UISearchBarDe
         
         self.formatLabels(true)
         
-        self.headerView.backgroundColor = UIColor(red: 0.988, green: 0.725, blue: 0.200, alpha: 1)
+        //self.headerView.backgroundColor = UIColor(red: 0.988, green: 0.725, blue: 0.200, alpha: 1)
+        
+        let resultsController = SearchResultsController()
+        searchController = UISearchController(searchResultsController: resultsController)
+        let searchBar = searchController.searchBar
+        //searchBar.scopeButtonTitles = ["All", "Short", "Long"]
+        searchBar.placeholder = "IMDb Search"
+        searchBar.sizeToFit()
+        searchBar.searchBarStyle = UISearchBarStyle.Minimal
+        tableHeader.tableHeaderView = searchBar
+        searchController.searchResultsUpdater = resultsController
         
     }
 
@@ -220,11 +232,14 @@ class ViewController: UIViewController, IMDbAPIControllerDelegate, UISearchBarDe
         self.apiController.searchIMDb(searchBar.text)
         searchBar.resignFirstResponder()
         searchBar.text = ""
+        
     }
     
     func userTappedInView(recognizer: UITapGestureRecognizer) {
         self.imdbSearchBar?.resignFirstResponder()
     }
+    
+    
 
 }
 
